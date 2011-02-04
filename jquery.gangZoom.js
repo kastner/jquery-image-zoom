@@ -38,8 +38,6 @@
 
             $(document.body).mouseup(function (event) {
                 if (self.mouseDown) {
-                    console.log("haye");
-                    console.log(event.target);
                     if (event.target == self.img || event.target == self.float[0]) {
                         self.go();
                     } else {

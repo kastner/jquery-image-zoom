@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>jQuery Zoom Stuff</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+    <script src="jquery.gangZoom.js"></script>
+    <script>
+      var startTime = 1296844165;
+      var endTime = 1296847765;
+      $(function () {
+        $(".zoomable").gangZoom({
+            startTime: 1296844165,
+            endTime: 1296847765,
+            paddingLeft: 67,
+            paddingRight: 30,
+            done: function (startTime, endTime) {
+              setStartAndEnd(startTime, endTime);
+              //document.forms['ganglia_form'].submit();
+            },
+            cancel: function (startTime, endTime) {
+              setStartAndEnd(startTime, endTime);
+            }
+        });
+     
+        function setStartAndEnd(_startTime, _endTime) {
+          startTime = _startTime;
+          endTime = _endTime;
+        }
+      });
+    </script>
+
+    <script>
+      $(function () {
+        setInterval(function () {
+          $.each(["start", "end"], function (i, kind) {
+            var ts = window[kind + "Time"];
+            $("#" + kind + " input").val(ts);
+            $("#" + kind + " span").html(new Date(ts * 1000) + "");
+          });
+        }, 100);
+      });
+    </script>
+  </head>
+  <body>
+    <div id="start">
+      <label for="datepicker-cs">Start Time</label>
+      <input type="text" id="datepicker-cs">
+      <span class="human"></span>
+    </div>
+    <div id="end">
+      <label for="datepicker-ce">End Time</label>
+      <input type="text" id="datepicker-ce">
+      <span class="human"></span>
+    </div>
+    <img class="zoomable" src="http://cl.ly/1y011w1o063x2E1V220Y/content"></img>
+  </body>
+</html>
