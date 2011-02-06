@@ -47,8 +47,16 @@
 
             self.updateOverlay = function (evt) {
                 var curX = evt.pageX;
+                var minWidth = self.img.offset().left + opts.paddingLeft;
+                var maxWidth = self.img.offset().left + (self.img.width() - opts.paddingRight);
+
                 if (self.startX > curX) {
+                    if (curX < minWidth) {
+                        curX = minWidth;
+                    }
                     self.float.css({ left: curX });
+                } else if (curX > maxWidth) {
+                    curX = maxWidth;
                 }
 
                 self.float.width(Math.abs(curX - self.startX));
