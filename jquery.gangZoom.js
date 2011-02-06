@@ -24,14 +24,23 @@
                 return { startTime: selStartTime, endTime: selEndTime };
             }
 
+            self.setMouseDown = function (down) {
+                self.mouseDown = down;
+                if (down) {
+                    $(document.body).css("cursor", "crosshair");
+                } else {
+                    $(document.body).css("cursor", "default");
+                }
+            }
+
             self.cancel = function () {
-                self.mouseDown = false;
+                self.setMouseDown(false);
                 var box = self.getTimes();
                 opts.cancel(box.startTime, box.endTime);
             };
 
             self.go = function () {
-                self.mouseDown = false;
+                self.setMouseDown(false);
                 var box = self.getTimes();
                 opts.done(box.startTime, box.endTime);
             };
@@ -76,7 +85,7 @@
                     evt.stopPropagation();
 
                     self.shouldStopClick = true;
-                    self.mouseDown = true;
+                    self.setMouseDown(true);
 
                     $("#" + opts.floatId).remove();
 
