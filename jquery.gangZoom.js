@@ -47,16 +47,14 @@
 
             self.updateOverlay = function (evt) {
                 var curX = evt.pageX;
-                var minWidth = self.img.offset().left + opts.paddingLeft;
-                var maxWidth = self.img.offset().left + (self.img.width() - opts.paddingRight);
 
                 if (self.startX > curX) {
-                    if (curX < minWidth) {
-                        curX = minWidth;
+                    if (curX < self.minWidth) {
+                        curX = self.minWidth;
                     }
                     self.float.css({ left: curX });
-                } else if (curX > maxWidth) {
-                    curX = maxWidth;
+                } else if (curX > self.maxWidth) {
+                    curX = self.maxWidth;
                 }
 
                 self.float.width(Math.abs(curX - self.startX));
@@ -91,16 +89,20 @@
 
                 setTimeout(function () {
                     evt.stopPropagation();
-
-                    self.shouldStopClick = true;
-                    self.setMouseDown(true);
+                    var clickX = evt.pageX;
+                    var clickY = evt.pageY;
+                    self.startX = clickX;
 
                     $("#" + opts.floatId).remove();
 
-                    var clickX = evt.pageX;
-                    var clickY = evt.pageY;
+                    self.minWidth = self.img.offset().left + opts.paddingLeft;
+                    self.maxWidth = self.img.offset().left + (self.img.width() - opts.paddingRight);
+                    if ((clickX > self.maxWidth) || (clickX < self.minWidth)) {
+                        return;
+                    }
 
-                    self.startX = clickX;
+                    self.shouldStopClick = true;
+                    self.setMouseDown(true);
 
                     var float = $("<div id='" + opts.floatId + "'>")
                         .css({
